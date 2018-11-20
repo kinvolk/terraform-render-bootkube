@@ -69,14 +69,20 @@ variable "container_images" {
   type        = "map"
 
   default = {
-    calico           = "quay.io/calico/node:v3.2.3"
-    calico_cni       = "quay.io/calico/cni:v3.2.3"
+    calico           = "quay.io/calico/node:v3.3.1"
+    calico_cni       = "quay.io/calico/cni:v3.3.1"
     flannel          = "quay.io/coreos/flannel:v0.10.0-amd64"
     flannel_cni      = "quay.io/coreos/flannel-cni:v0.3.0"
-    hyperkube        = "k8s.gcr.io/hyperkube:v1.12.1"
-    coredns          = "k8s.gcr.io/coredns:1.2.2"
+    hyperkube        = "k8s.gcr.io/hyperkube:v1.12.2"
+    coredns          = "k8s.gcr.io/coredns:1.2.6"
     pod_checkpointer = "quay.io/coreos/pod-checkpointer:018007e77ccd61e8e59b7e15d7fc5e318a5a2682"
   }
+}
+
+variable "enable_reporting" {
+  type = "string"
+  description = "Enable usage or analytics reporting to upstream component owners (Tigera: Calico)"
+  default = "false"
 }
 
 variable "trusted_certs_dir" {
