@@ -25,19 +25,19 @@ variable "cloud_provider" {
 }
 
 variable "networking" {
-  description = "Choice of networking provider (flannel or calico)"
+  description = "Choice of networking provider (flannel or calico or kube-router)"
   type        = "string"
   default     = "flannel"
 }
 
 variable "network_mtu" {
-  description = "CNI interface MTU (applies to calico only)"
+  description = "CNI interface MTU (only applies to calico and kube-router)"
   type        = "string"
   default     = "1500"
 }
 
 variable "network_ip_autodetection_method" {
-  description = "Method to autodetect the host IPv4 address (applies to calico only)"
+  description = "Method to autodetect the host IPv4 address (only applies to calico)"
   type        = "string"
   default     = "first-found"
 }
@@ -69,20 +69,21 @@ variable "container_images" {
   type        = "map"
 
   default = {
-    calico           = "quay.io/calico/node:v3.3.1"
-    calico_cni       = "quay.io/calico/cni:v3.3.1"
+    calico           = "quay.io/calico/node:v3.4.0"
+    calico_cni       = "quay.io/calico/cni:v3.4.0"
     flannel          = "quay.io/coreos/flannel:v0.10.0-amd64"
     flannel_cni      = "quay.io/coreos/flannel-cni:v0.3.0"
-    hyperkube        = "k8s.gcr.io/hyperkube:v1.12.2"
+    kube_router      = "cloudnativelabs/kube-router:v0.2.3"
+    hyperkube        = "k8s.gcr.io/hyperkube:v1.13.1"
     coredns          = "k8s.gcr.io/coredns:1.2.6"
-    pod_checkpointer = "quay.io/coreos/pod-checkpointer:018007e77ccd61e8e59b7e15d7fc5e318a5a2682"
+    pod_checkpointer = "quay.io/coreos/pod-checkpointer:83e25e5968391b9eb342042c435d1b3eeddb2be1"
   }
 }
 
 variable "enable_reporting" {
-  type = "string"
+  type        = "string"
   description = "Enable usage or analytics reporting to upstream component owners (Tigera: Calico)"
-  default = "false"
+  default     = "false"
 }
 
 variable "trusted_certs_dir" {
