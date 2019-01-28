@@ -36,19 +36,6 @@ spec:
                   values:
                   - kube-scheduler
               topologyKey: kubernetes.io/hostname
-      containers:
-      - name: kube-scheduler
-        image: ${hyperkube_image}
-        command:
-        - ./hyperkube
-        - scheduler
-        - --leader-elect=true
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 10251  # Note: Using default port. Update if --port option is set differently.
-          initialDelaySeconds: 15
-          timeoutSeconds: 15
       nodeSelector:
         node-role.kubernetes.io/master: ""
       securityContext:
@@ -59,3 +46,17 @@ spec:
       - key: node-role.kubernetes.io/master
         operator: Exists
         effect: NoSchedule
+      containers:
+      - name: kube-scheduler
+        image: ${hyperkube_image}
+        command:
+        - ./hyperkube
+        - scheduler
+        - --leader-elect=true
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /healthz
+            port: 10259
+          initialDelaySeconds: 15
+          timeoutSeconds: 15
