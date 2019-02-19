@@ -69,12 +69,12 @@ variable "container_images" {
   type        = "map"
 
   default = {
-    calico           = "quay.io/calico/node:v3.5.0"
-    calico_cni       = "quay.io/calico/cni:v3.5.0"
-    flannel          = "quay.io/coreos/flannel:v0.10.0-amd64"
+    calico           = "quay.io/calico/node:v3.5.1"
+    calico_cni       = "quay.io/calico/cni:v3.5.1"
+    flannel          = "quay.io/coreos/flannel:v0.11.0-amd64"
     flannel_cni      = "quay.io/coreos/flannel-cni:v0.3.0"
-    kube_router      = "cloudnativelabs/kube-router:v0.2.4"
-    hyperkube        = "k8s.gcr.io/hyperkube:v1.13.2"
+    kube_router      = "cloudnativelabs/kube-router:v0.2.5"
+    hyperkube        = "k8s.gcr.io/hyperkube:v1.13.3"
     coredns          = "k8s.gcr.io/coredns:1.3.1"
     pod_checkpointer = "quay.io/coreos/pod-checkpointer:83e25e5968391b9eb342042c435d1b3eeddb2be1"
   }
