@@ -93,6 +93,14 @@ data "template_file" "kubeconfig-kubelet" {
   }
 }
 
+# If var.api_servers_external isn't set, use var.api_servers.
+# This is for supporting separate API server URLs for external clients in a backward-compatible way.
+# The use of split() and join() here is because Terraform's conditional operator ('?') cannot be
+# used with lists.
+locals {
+  api_servers_external = "${split(",", join(",", var.api_servers_external) == "" ? join(",", var.api_servers) : join(",", var.api_servers_external))}"
+}
+
 data "template_file" "kubeconfig-admin" {
   template = file("${path.module}/resources/kubeconfig-admin")
 
@@ -101,7 +109,6 @@ data "template_file" "kubeconfig-admin" {
     ca_cert = base64encode(tls_self_signed_cert.kube-ca.cert_pem)
     kubelet_cert = base64encode(tls_locally_signed_cert.admin.cert_pem)
     kubelet_key = base64encode(tls_private_key.admin.private_key_pem)
-    server = format("https://%s:%s", element(var.api_servers, 0), var.external_apiserver_port)
+    server = format("https://%s:%s", element(local.api_servers_external, 0), var.external_apiserver_port)
   }
 }
-
