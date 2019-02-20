@@ -4,8 +4,15 @@ variable "cluster_name" {
 }
 
 variable "api_servers" {
-  description = "List of URLs used to reach kube-apiserver"
+  description = "List of URLs used to reach kube-apiserver from within the cluster"
   type        = "list"
+}
+
+# When not set, the value of var.api_servers will be used.
+variable "api_servers_external" {
+  description = "List of URLs used to reach kube-apiserver from an external network"
+  type        = "list"
+  default     = []
 }
 
 variable "etcd_servers" {

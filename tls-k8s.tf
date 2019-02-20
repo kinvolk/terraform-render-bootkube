@@ -68,6 +68,7 @@ resource "tls_cert_request" "apiserver" {
 
   dns_names = [
     "${var.api_servers}",
+    "${var.api_servers_external}",
     "kubernetes",
     "kubernetes.default",
     "kubernetes.default.svc",
