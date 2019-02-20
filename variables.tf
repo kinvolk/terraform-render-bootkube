@@ -8,6 +8,11 @@ variable "api_servers" {
   type        = "list"
 }
 
+variable "api_servers_private" {
+  description = "List of URLs used to reach kube-apiserver via private IPs"
+  type        = "list"
+}
+
 variable "etcd_servers" {
   description = "List of URLs used to reach etcd servers."
   type        = "list"
