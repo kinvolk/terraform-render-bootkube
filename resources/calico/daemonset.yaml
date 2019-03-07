@@ -127,6 +127,10 @@ spec:
               value: "info"
             - name: FELIX_HEALTHENABLED
               value: "true"
+            # Disable fail safe rules
+            - name: FELIX_FAILSAFEINBOUNDHOSTPORTS
+              value: "none"
+          securityContext:
           securityContext:
             privileged: true
           resources:
