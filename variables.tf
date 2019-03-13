@@ -4,12 +4,12 @@ variable "cluster_name" {
 }
 
 variable "api_servers" {
-  description = "List of URLs used to reach kube-apiserver"
+  description = "List of URLs used by k8s components to reach kube-apiserver"
   type        = "list"
 }
 
-variable "api_servers_private" {
-  description = "List of URLs used to reach kube-apiserver via private IPs"
+variable "api_servers_admin" {
+  description = "List of URLs used by admins to reach kube-apiserver"
   type        = "list"
 }
 
