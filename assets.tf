@@ -75,11 +75,10 @@ data "template_file" "kubeconfig-kubelet" {
   template = "${file("${path.module}/resources/kubeconfig-kubelet")}"
 
   vars {
-    ca_cert        = "${base64encode(var.ca_certificate == "" ? join(" ", tls_self_signed_cert.kube-ca.*.cert_pem) : var.ca_certificate)}"
-    kubelet_cert   = "${base64encode(tls_locally_signed_cert.kubelet.cert_pem)}"
-    kubelet_key    = "${base64encode(tls_private_key.kubelet.private_key_pem)}"
-    server         = "${format("https://%s:%s", element(var.api_servers, 0), var.apiserver_port)}"
-    server_private = "${format("https://%s:%s", element(var.api_servers_private, 0), var.apiserver_port)}"
+    ca_cert      = "${base64encode(var.ca_certificate == "" ? join(" ", tls_self_signed_cert.kube-ca.*.cert_pem) : var.ca_certificate)}"
+    kubelet_cert = "${base64encode(tls_locally_signed_cert.kubelet.cert_pem)}"
+    kubelet_key  = "${base64encode(tls_private_key.kubelet.private_key_pem)}"
+    server       = "${format("https://%s:%s", element(var.api_servers_private, 0), var.apiserver_port)}"
   }
 }
 
