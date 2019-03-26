@@ -79,3 +79,7 @@ output "kubelet_key" {
 output "server" {
   value = "${format("https://%s:%s", element(var.api_servers, 0), var.apiserver_port)}"
 }
+
+output "server_admin" {
+  value = "${format("https://%s:%s", element(local.api_servers_external, 0), var.apiserver_port)}"
+}
