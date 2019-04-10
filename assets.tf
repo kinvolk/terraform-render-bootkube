@@ -37,8 +37,8 @@ resource "template_dir" "manifests" {
     trusted_certs_dir      = "${var.trusted_certs_dir}"
     apiserver_port         = "${var.apiserver_port}"
 
-    ca_cert            = "${base64encode(var.ca_certificate == "" ? join(" ", tls_self_signed_cert.kube-ca.*.cert_pem) : var.ca_certificate)}"
-    ca_key             = "${base64encode(var.ca_private_key == "" ? join(" ", tls_private_key.kube-ca.*.private_key_pem) : var.ca_private_key)}"
+    ca_cert            = "${base64encode(tls_self_signed_cert.kube-ca.cert_pem)}"
+    ca_key             = "${base64encode(tls_private_key.kube-ca.private_key_pem)}"
     server             = "${format("https://%s:%s", element(var.api_servers, 0), var.apiserver_port)}"
     apiserver_key      = "${base64encode(tls_private_key.apiserver.private_key_pem)}"
     apiserver_cert     = "${base64encode(tls_locally_signed_cert.apiserver.cert_pem)}"
@@ -48,7 +48,23 @@ resource "template_dir" "manifests" {
     etcd_ca_cert     = "${base64encode(tls_self_signed_cert.etcd-ca.cert_pem)}"
     etcd_client_cert = "${base64encode(tls_locally_signed_cert.client.cert_pem)}"
     etcd_client_key  = "${base64encode(tls_private_key.client.private_key_pem)}"
+
+    aggregation_flags       = "${var.enable_aggregation == "true" ? indent(8, local.aggregation_flags) : ""}"
+    aggregation_ca_cert     = "${var.enable_aggregation == "true" ? base64encode(join(" ", tls_self_signed_cert.aggregation-ca.*.cert_pem)) : ""}"
+    aggregation_client_cert = "${var.enable_aggregation == "true" ? base64encode(join(" ", tls_locally_signed_cert.aggregation-client.*.cert_pem)) : ""}"
+    aggregation_client_key  = "${var.enable_aggregation == "true" ? base64encode(join(" ", tls_private_key.aggregation-client.*.private_key_pem)) : ""}"
   }
+}
+
+locals {
+  aggregation_flags = <<EOF
+
+- --proxy-client-cert-file=/etc/kubernetes/secrets/aggregation-client.crt
+- --proxy-client-key-file=/etc/kubernetes/secrets/aggregation-client.key
+- --requestheader-client-ca-file=/etc/kubernetes/secrets/aggregation-ca.crt
+- --requestheader-extra-headers-prefix=X-Remote-Extra-
+- --requestheader-group-headers=X-Remote-Group
+- --requestheader-username-headers=X-Remote-UserEOF
 }
 
 # Generated kubeconfig for Kubelets
@@ -74,7 +90,7 @@ data "template_file" "kubeconfig-kubelet" {
   template = "${file("${path.module}/resources/kubeconfig-kubelet")}"
 
   vars {
-    ca_cert      = "${base64encode(var.ca_certificate == "" ? join(" ", tls_self_signed_cert.kube-ca.*.cert_pem) : var.ca_certificate)}"
+    ca_cert      = "${base64encode(tls_self_signed_cert.kube-ca.cert_pem)}"
     kubelet_cert = "${base64encode(tls_locally_signed_cert.kubelet.cert_pem)}"
     kubelet_key  = "${base64encode(tls_private_key.kubelet.private_key_pem)}"
     server       = "${format("https://%s:%s", element(var.api_servers, 0), var.apiserver_port)}"
@@ -94,7 +110,7 @@ data "template_file" "kubeconfig-admin" {
 
   vars {
     name         = "${var.cluster_name}"
-    ca_cert      = "${base64encode(var.ca_certificate == "" ? join(" ", tls_self_signed_cert.kube-ca.*.cert_pem) : var.ca_certificate)}"
+    ca_cert      = "${base64encode(tls_self_signed_cert.kube-ca.cert_pem)}"
     kubelet_cert = "${base64encode(tls_locally_signed_cert.admin.cert_pem)}"
     kubelet_key  = "${base64encode(tls_private_key.admin.private_key_pem)}"
     server       = "${format("https://%s:%s", element(local.api_servers_external, 0), var.apiserver_port)}"
