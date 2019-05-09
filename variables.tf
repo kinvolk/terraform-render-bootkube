@@ -43,6 +43,12 @@ variable "network_mtu" {
   default     = "1500"
 }
 
+variable "network_encapsulation" {
+  description = "Network encapsulation mode either ipip or vxlan (only applies to calico)"
+  type        = "string"
+  default     = "ipip"
+}
+
 variable "network_ip_autodetection_method" {
   description = "Method to autodetect the host IPv4 address (only applies to calico)"
   type        = "string"
@@ -76,11 +82,11 @@ variable "container_images" {
   type        = "map"
 
   default = {
-    calico           = "quay.io/calico/node:v3.6.1"
-    calico_cni       = "quay.io/calico/cni:v3.6.1"
+    calico           = "quay.io/calico/node:v3.7.0"
+    calico_cni       = "quay.io/calico/cni:v3.7.0"
     flannel          = "quay.io/coreos/flannel:v0.11.0-amd64"
     flannel_cni      = "quay.io/coreos/flannel-cni:v0.3.0"
-    kube_router      = "cloudnativelabs/kube-router:v0.2.5"
+    kube_router      = "cloudnativelabs/kube-router:v0.3.0"
     hyperkube        = "k8s.gcr.io/hyperkube:v1.14.1"
     coredns          = "k8s.gcr.io/coredns:1.3.1"
     pod_checkpointer = "quay.io/coreos/pod-checkpointer:83e25e5968391b9eb342042c435d1b3eeddb2be1"
