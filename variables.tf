@@ -15,6 +15,12 @@ variable "api_servers_external" {
   default     = []
 }
 
+variable "api_servers_ips" {
+  description = "List of additional IPv4 addresses to be included in the kube-apiserver TLS certificate"
+  type        = "list"
+  default     = []
+}
+
 variable "etcd_servers" {
   description = "List of URLs used to reach etcd servers."
   type        = "list"
