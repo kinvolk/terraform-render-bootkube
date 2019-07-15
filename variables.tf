@@ -21,6 +21,18 @@ variable "api_servers_ips" {
   default     = []
 }
 
+variable "node_names" {
+  description = "List of node's hostnames in the cluster"
+  type        = "list"
+  default     = []
+}
+
+variable "node_count" {
+  description = "Number of nodes in the cluster including masters"
+  type        = "string"
+  default     = "0"
+}
+
 variable "etcd_servers" {
   description = "List of URLs used to reach etcd servers."
   type        = "list"
