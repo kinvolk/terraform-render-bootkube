@@ -69,8 +69,10 @@ locals {
 
 # Generated kubeconfig for Kubelets
 resource "local_file" "kubeconfig-kubelet" {
-  content  = "${data.template_file.kubeconfig-kubelet.rendered}"
-  filename = "${var.asset_dir}/auth/kubeconfig-kubelet"
+  count = "${var.node_count}"
+
+  content  = "${element(data.template_file.kubeconfig-kubelet.*.rendered, count.index)}"
+  filename = "${var.asset_dir}/auth/kubeconfig-kubelet-${var.node_names[count.index]}"
 }
 
 # Generated admin kubeconfig (bootkube requires it be at auth/kubeconfig)
@@ -87,12 +89,15 @@ resource "local_file" "kubeconfig-admin-named" {
 }
 
 data "template_file" "kubeconfig-kubelet" {
+  count = "${var.node_count}"
+
   template = "${file("${path.module}/resources/kubeconfig-kubelet")}"
 
   vars {
     ca_cert      = "${base64encode(tls_self_signed_cert.kube-ca.cert_pem)}"
-    kubelet_cert = "${base64encode(tls_locally_signed_cert.kubelet.cert_pem)}"
-    kubelet_key  = "${base64encode(tls_private_key.kubelet.private_key_pem)}"
+    kubelet_cert = "${base64encode(element(tls_locally_signed_cert.kubelet.*.cert_pem, count.index))}"
+    kubelet_key  = "${base64encode(element(tls_private_key.kubelet.*.private_key_pem, count.index))}"
+    node_name    = "${var.node_names[count.index]}"
     server       = "${format("https://%s:%s", element(var.api_servers, 0), var.apiserver_port)}"
   }
 }

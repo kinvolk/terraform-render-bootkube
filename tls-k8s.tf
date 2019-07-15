@@ -152,27 +152,31 @@ resource "local_file" "service-account-crt" {
 # Kubelet
 
 resource "tls_private_key" "kubelet" {
+  count = "${var.node_count}"
+
   algorithm = "RSA"
   rsa_bits  = "2048"
 }
 
 resource "tls_cert_request" "kubelet" {
-  key_algorithm   = "${tls_private_key.kubelet.algorithm}"
-  private_key_pem = "${tls_private_key.kubelet.private_key_pem}"
+  count = "${var.node_count}"
+
+  key_algorithm   = "${element(tls_private_key.kubelet.*.algorithm, count.index)}"
+  private_key_pem = "${element(tls_private_key.kubelet.*.private_key_pem, count.index)}"
 
   subject {
-    common_name  = "kubelet"
+    common_name  = "system:node:${var.node_names[count.index]}"
     organization = "system:nodes"
   }
 }
 
 resource "tls_locally_signed_cert" "kubelet" {
-  cert_request_pem = "${tls_cert_request.kubelet.cert_request_pem}"
+  count = "${var.node_count}"
 
-  ca_key_algorithm   = "${tls_self_signed_cert.kube-ca.key_algorithm}"
-  ca_private_key_pem = "${tls_private_key.kube-ca.private_key_pem}"
-  ca_cert_pem        = "${tls_self_signed_cert.kube-ca.cert_pem}"
-
+  cert_request_pem      = "${element(tls_cert_request.kubelet.*.cert_request_pem, count.index)}"
+  ca_key_algorithm      = "${tls_self_signed_cert.kube-ca.key_algorithm}"
+  ca_private_key_pem    = "${tls_private_key.kube-ca.private_key_pem}"
+  ca_cert_pem           = "${tls_self_signed_cert.kube-ca.cert_pem}"
   validity_period_hours = 8760
 
   allowed_uses = [
@@ -184,11 +188,15 @@ resource "tls_locally_signed_cert" "kubelet" {
 }
 
 resource "local_file" "kubelet-key" {
-  content  = "${tls_private_key.kubelet.private_key_pem}"
-  filename = "${var.asset_dir}/tls/kubelet.key"
+  count = "${var.node_count}"
+
+  content  = "${element(tls_private_key.kubelet.*.private_key_pem, count.index)}"
+  filename = "${var.asset_dir}/tls/kubelet-${var.node_names[count.index]}.key"
 }
 
 resource "local_file" "kubelet-crt" {
-  content  = "${tls_locally_signed_cert.kubelet.cert_pem}"
-  filename = "${var.asset_dir}/tls/kubelet.crt"
+  count = "${var.node_count}"
+
+  content  = "${element(tls_locally_signed_cert.kubelet.*.cert_pem, count.index)}"
+  filename = "${var.asset_dir}/tls/kubelet-${var.node_names[count.index]}.crt"
 }
