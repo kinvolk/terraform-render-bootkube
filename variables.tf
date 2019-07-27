@@ -17,7 +17,7 @@ variable "api_servers_external" {
 
 variable "api_servers_ips" {
   description = "List of additional IPv4 addresses to be included in the kube-apiserver TLS certificate"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 

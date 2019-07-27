@@ -98,7 +98,7 @@ data "template_file" "kubeconfig-kubelet" {
 # The use of split() and join() here is because Terraform's conditional operator ('?') cannot be
 # used with lists.
 locals {
-  api_servers_external = "${split(",", join(",", var.api_servers_external) == "" ? join(",", var.api_servers) : join(",", var.api_servers_external))}"
+  api_servers_external = split(",", join(",", var.api_servers_external) == "" ? join(",", var.api_servers) : join(",", var.api_servers_external))
 }
 
 data "template_file" "kubeconfig-admin" {
