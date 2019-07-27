@@ -71,5 +71,5 @@ output "server" {
 }
 
 output "server_admin" {
-  value = format("https://%s:%s", element(local.api_servers_external, 0), var.apiserver_port)
+  value = format("https://%s:%s", element(local.api_servers_external, 0), var.external_apiserver_port)
 }
