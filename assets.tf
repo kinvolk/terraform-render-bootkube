@@ -1,6 +1,6 @@
 # Self-hosted Kubernetes bootstrap-manifests
 resource "template_dir" "bootstrap-manifests" {
-  source_dir      = "${path.module}/resources/bootstrap-manifests"
+  source_dir      = "${replace(path.module, path.cwd, ".")}/resources/bootstrap-manifests"
   destination_dir = "${var.asset_dir}/bootstrap-manifests"
 
   vars {
@@ -18,7 +18,7 @@ resource "template_dir" "bootstrap-manifests" {
 
 # Self-hosted Kubernetes manifests
 resource "template_dir" "manifests" {
-  source_dir      = "${path.module}/resources/manifests"
+  source_dir      = "${replace(path.module, path.cwd, ".")}/resources/manifests"
   destination_dir = "${var.asset_dir}/manifests"
 
   vars {
