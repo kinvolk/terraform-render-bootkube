@@ -14,6 +14,10 @@ resource "template_dir" "bootstrap-manifests" {
     trusted_certs_dir = "${var.trusted_certs_dir}"
     apiserver_port    = "${var.apiserver_port}"
   }
+
+  lifecycle {
+    ignore_changes = ["source_dir"]
+  }
 }
 
 # Self-hosted Kubernetes manifests
@@ -53,6 +57,10 @@ resource "template_dir" "manifests" {
     aggregation_ca_cert     = "${var.enable_aggregation == "true" ? base64encode(join(" ", tls_self_signed_cert.aggregation-ca.*.cert_pem)) : ""}"
     aggregation_client_cert = "${var.enable_aggregation == "true" ? base64encode(join(" ", tls_locally_signed_cert.aggregation-client.*.cert_pem)) : ""}"
     aggregation_client_key  = "${var.enable_aggregation == "true" ? base64encode(join(" ", tls_private_key.aggregation-client.*.private_key_pem)) : ""}"
+  }
+
+  lifecycle {
+    ignore_changes = ["source_dir"]
   }
 }
 
