@@ -2,7 +2,7 @@
 
 resource "template_dir" "flannel-manifests" {
   count           = "${var.networking == "flannel" ? 1 : 0}"
-  source_dir      = "${path.module}/resources/flannel"
+  source_dir      = "${replace(path.module, path.cwd, ".")}/resources/flannel"
   destination_dir = "${var.asset_dir}/manifests-networking"
 
   vars {
@@ -15,7 +15,7 @@ resource "template_dir" "flannel-manifests" {
 
 resource "template_dir" "calico-manifests" {
   count           = "${var.networking == "calico" ? 1 : 0}"
-  source_dir      = "${path.module}/resources/calico"
+  source_dir      = "${replace(path.module, path.cwd, ".")}/resources/calico"
   destination_dir = "${var.asset_dir}/manifests-networking"
 
   vars {
@@ -24,8 +24,8 @@ resource "template_dir" "calico-manifests" {
 
     network_mtu                     = "${var.network_mtu}"
     network_encapsulation           = "${indent(2, var.network_encapsulation == "vxlan" ? "vxlanMode: Always" : "ipipMode: Always")}"
-    ipip_enabled                   = "${var.network_encapsulation == "ipip" ? true : false}"
-    ipip_readiness                 = "${var.network_encapsulation == "ipip" ? indent(16, "- --bird-ready") : ""}"
+    ipip_enabled                    = "${var.network_encapsulation == "ipip" ? true : false}"
+    ipip_readiness                  = "${var.network_encapsulation == "ipip" ? indent(16, "- --bird-ready") : ""}"
     vxlan_enabled                   = "${var.network_encapsulation == "vxlan" ? true : false}"
     network_ip_autodetection_method = "${var.network_ip_autodetection_method}"
     pod_cidr                        = "${var.pod_cidr}"
@@ -35,7 +35,7 @@ resource "template_dir" "calico-manifests" {
 
 resource "template_dir" "kube-router-manifests" {
   count           = "${var.networking == "kube-router" ? 1 : 0}"
-  source_dir      = "${path.module}/resources/kube-router"
+  source_dir      = "${replace(path.module, path.cwd, ".")}/resources/kube-router"
   destination_dir = "${var.asset_dir}/manifests-networking"
 
   vars {
