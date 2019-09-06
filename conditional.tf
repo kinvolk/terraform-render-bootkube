@@ -8,8 +8,7 @@ resource "template_dir" "flannel-manifests" {
   vars {
     flannel_image     = "${var.container_images["flannel"]}"
     flannel_cni_image = "${var.container_images["flannel_cni"]}"
-
-    pod_cidr = "${var.pod_cidr}"
+    pod_cidr          = "${var.pod_cidr}"
   }
 }
 
@@ -19,9 +18,8 @@ resource "template_dir" "calico-manifests" {
   destination_dir = "${var.asset_dir}/manifests-networking"
 
   vars {
-    calico_image     = "${var.container_images["calico"]}"
-    calico_cni_image = "${var.container_images["calico_cni"]}"
-
+    calico_image                    = "${var.container_images["calico"]}"
+    calico_cni_image                = "${var.container_images["calico_cni"]}"
     network_mtu                     = "${var.network_mtu}"
     network_encapsulation           = "${indent(2, var.network_encapsulation == "vxlan" ? "vxlanMode: Always" : "ipipMode: Always")}"
     ipip_enabled                    = "${var.network_encapsulation == "ipip" ? true : false}"
@@ -41,7 +39,6 @@ resource "template_dir" "kube-router-manifests" {
   vars {
     kube_router_image = "${var.container_images["kube_router"]}"
     flannel_cni_image = "${var.container_images["flannel_cni"]}"
-
-    network_mtu = "${var.network_mtu}"
+    network_mtu       = "${var.network_mtu}"
   }
 }

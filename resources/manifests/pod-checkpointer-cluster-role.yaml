@@ -9,4 +9,3 @@ rules:
       - nodes/proxy
     verbs:
       - get
-
