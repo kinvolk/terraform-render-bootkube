@@ -111,6 +111,12 @@ variable "trusted_certs_dir" {
   default     = "/usr/share/ca-certificates"
 }
 
+variable "certs_validity_period_hours" {
+  description = "Validity of all the certificates in hours"
+  type        = "string"
+  default     = 8760
+}
+
 variable "enable_aggregation" {
   description = "Enable the Kubernetes Aggregation Layer (defaults to false, recommended)"
   type        = "string"
