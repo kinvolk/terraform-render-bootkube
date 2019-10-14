@@ -26,7 +26,7 @@ spec:
     spec:
       hostNetwork: true
       nodeSelector:
-        node-role.kubernetes.io/master: ""
+        node.kubernetes.io/master: ""
       priorityClassName: system-cluster-critical
       serviceAccountName: kube-apiserver
       tolerations:
