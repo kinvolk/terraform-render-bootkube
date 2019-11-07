@@ -85,7 +85,7 @@ resource "template_dir" "kubernetes-chart" {
 
     calico_cni_image                = "${var.container_images["calico_cni"]}"
     network_mtu                     = "${var.network_mtu}"
-    network_encapsulation           = "${indent(2, var.network_encapsulation == "vxlan" ? "vxlanMode: Always" : "ipipMode: Always")}"
+    network_encapsulation           = "${indent(2, var.network_encapsulation == "vxlan" ? "vxlanMode" : "ipipMode")}"
     ipip_enabled                    = "${var.network_encapsulation == "ipip" ? true : false}"
     ipip_readiness                  = "${var.network_encapsulation == "ipip" ? indent(16, "- --bird-ready") : ""}"
     vxlan_enabled                   = "${var.network_encapsulation == "vxlan" ? true : false}"

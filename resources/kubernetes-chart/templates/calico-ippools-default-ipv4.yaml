@@ -4,7 +4,7 @@ metadata:
   name: default-ipv4-ippool
 spec:
   blockSize: 24
-  cidr: "{{ .Values.calico.podCIDR }}"
-  "{{ .Values.calico.networkEncapsulation }}"
+  cidr: {{ .Values.calico.podCIDR }}
+  {{ .Values.calico.networkEncapsulation }}: Always
   natOutgoing: true
   nodeSelector: all()

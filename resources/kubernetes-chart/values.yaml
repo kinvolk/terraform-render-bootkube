@@ -1,7 +1,3 @@
-# Default values for kubernetes-chart.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 apiserver:
   apiserverKey: ${apiserver_key}
   apiserverCert: ${apiserver_cert}
@@ -53,6 +49,6 @@ calico:
   networkIpAutodetectionMethod: ${network_ip_autodetection_method}
   ipipEnabled: ${ipip_enabled}
   vxlanEnabled: ${vxlan_enabled}
-  ipipReadiness: ${ipip_readiness}
+  ipipReadiness: "${ipip_readiness}"
   podCIDR: ${pod_cidr}
   networkEncapsulation: ${network_encapsulation}

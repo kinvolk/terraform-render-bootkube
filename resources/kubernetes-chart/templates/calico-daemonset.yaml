@@ -98,7 +98,7 @@ spec:
             - name: IP
               value: "autodetect"
             - name: IP_AUTODETECTION_METHOD
-              value: "{{ .Values.calico.networkIpAutodetectionMethod }}"
+              value: {{ .Values.calico.networkIpAutodetectionMethod }}
             # Whether Felix should enable IP-in-IP tunnel
             - name: FELIX_IPINIPENABLED
               value: "{{ .Values.calico.ipipEnabled }}"
@@ -151,7 +151,7 @@ spec:
               command:
                 - /bin/calico-node
                 - -felix-ready
-                "{{ .Values.calico.ipipReadiness }}"
+                {{ .Values.calico.ipipReadiness }}
             periodSeconds: 10
           volumeMounts:
             - name: lib-modules
