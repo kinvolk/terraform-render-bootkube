@@ -45,10 +45,6 @@ coredns:
   controlPlaneReplicas: ${control_plane_replicas}
   image: ${coredns_image}
   clusterIP: ${cluster_dns_service_ip}
-# flannel:
-#   podCIDR: ${pod_cidr}
-#   image: ${flannel_image}
-#   cniImage: ${flannel_cni_image}
 calico:
   networkMTU: ${network_mtu}
   image: ${calico_image}
