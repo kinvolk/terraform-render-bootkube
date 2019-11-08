@@ -35,7 +35,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: kube-apiserver
-        image: ${hyperkube_image}
+        image: {{ .Values.apiserver.image }}
         command:
         - /hyperkube
         - kube-apiserver

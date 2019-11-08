@@ -8,4 +8,4 @@ calico:
   vxlanEnabled: ${vxlan_enabled}
   ipipReadiness: "${ipip_readiness}"
   podCIDR: ${pod_cidr}
-  networkEncapsulation: ${network_encapsulation}
+  networkEncapsulation: "${network_encapsulation}"
