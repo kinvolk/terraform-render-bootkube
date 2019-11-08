@@ -12,7 +12,7 @@ data:
         log . {
             class error
         }
-        kubernetes "{{ .Values.coredns.clusterDomainSufix }}" in-addr.arpa ip6.arpa {
+        kubernetes {{ .Values.coredns.clusterDomainSufix }} in-addr.arpa ip6.arpa {
             pods insecure
             fallthrough in-addr.arpa ip6.arpa
         }

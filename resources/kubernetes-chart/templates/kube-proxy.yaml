@@ -33,11 +33,11 @@ spec:
         operator: Exists
       containers:
       - name: kube-proxy
-        image: "{{ .Values.kubeProxy.image }}"
+        image: {{ .Values.kubeProxy.image }}
         command:
         - ./hyperkube
         - kube-proxy
-        - --cluster-cidr="{{ .Values.kubeProxy.podCIDR }}"
+        - --cluster-cidr={{ .Values.kubeProxy.podCIDR }}
         - --hostname-override=$(NODE_NAME)
         - --kubeconfig=/etc/kubernetes/kubeconfig
         - --proxy-mode=iptables
@@ -73,4 +73,4 @@ spec:
           path: /lib/modules
       - name: ssl-certs-host
         hostPath:
-          path: "{{ .Values.kubeProxy.trustedCertsDir }}"
+          path: {{ .Values.kubeProxy.trustedCertsDir }}

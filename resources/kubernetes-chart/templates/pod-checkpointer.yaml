@@ -35,7 +35,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: pod-checkpointer
-        image: "{{ .Values.podCheckpointer.image }}"
+        image: {{ .Values.podCheckpointer.image }}
         command:
         - /checkpoint
         - --lock-file=/var/run/lock/pod-checkpointer.lock

@@ -45,19 +45,19 @@ spec:
         - --authorization-mode=RBAC
         - --bind-address=0.0.0.0
         - --client-ca-file=/etc/kubernetes/secrets/ca.crt
-        - --cloud-provider="{{ .Values.apiserver.cloudProvider }}"
+        - --cloud-provider={{ .Values.apiserver.cloudProvider }}
         - --enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultTolerationSeconds,DefaultStorageClass,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota,Priority,PodSecurityPolicy
         - --etcd-cafile=/etc/kubernetes/secrets/etcd-client-ca.crt
         - --etcd-certfile=/etc/kubernetes/secrets/etcd-client.crt
         - --etcd-keyfile=/etc/kubernetes/secrets/etcd-client.key
-        - --etcd-servers="{{ .Values.apiserver.etcdServers}}"
+        - --etcd-servers={{ .Values.apiserver.etcdServers}}
         - --insecure-port=0
         - --kubelet-client-certificate=/etc/kubernetes/secrets/apiserver.crt
         - --kubelet-client-key=/etc/kubernetes/secrets/apiserver.key
         - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname{{ .Values.apiserver.aggregationFlags }}
         - --secure-port=6443
         - --service-account-key-file=/etc/kubernetes/secrets/service-account.pub
-        - --service-cluster-ip-range="{{ .Values.apiserver.serviceCIDR }}"
+        - --service-cluster-ip-range={{ .Values.apiserver.serviceCIDR }}
         - --storage-backend=etcd3
         - --tls-cert-file=/etc/kubernetes/secrets/apiserver.crt
         - --tls-private-key-file=/etc/kubernetes/secrets/apiserver.key
@@ -82,4 +82,4 @@ spec:
           secretName: kube-apiserver
       - name: ssl-certs-host
         hostPath:
-          path: "{{ .Values.apiserver.trustedCertsDir }}"
+          path: {{ .Values.apiserver.trustedCertsDir }}

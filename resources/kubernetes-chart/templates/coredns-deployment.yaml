@@ -47,7 +47,7 @@ spec:
           effect: NoSchedule
       containers:
         - name: coredns
-          image: "{{ .Values.coredns.image }}"
+          image: {{ .Values.coredns.image }}
           resources:
             limits:
               memory: 170Mi

@@ -12,7 +12,7 @@ metadata:
 spec:
   selector:
     k8s-app: coredns
-  clusterIP: "{{ .Values.coredns.clusterIP }}"
+  clusterIP: {{ .Values.coredns.clusterIP }}
   ports:
     - name: dns
       port: 53
