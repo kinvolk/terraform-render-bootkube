@@ -31,7 +31,7 @@ spec:
       initContainers:
         # Install Calico CNI binaries and CNI network config file on nodes
         - name: install-cni
-          image: "{{ .Values.calico.cniImage }}"
+          image: {{ .Values.calico.cniImage }}
           command: ["/install-cni.sh"]
           env:
             # Name of the CNI config file to create on each node.
@@ -64,7 +64,7 @@ spec:
               mountPath: /host/etc/cni/net.d
       containers:
         - name: calico-node
-          image: "{{ .Values.calico.image }}"
+          image: {{ .Values.calico.image }}
           env:
             # Use Kubernetes API as the backing datastore.
             - name: DATASTORE_TYPE

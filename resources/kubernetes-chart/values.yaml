@@ -41,7 +41,14 @@ coredns:
   controlPlaneReplicas: ${control_plane_replicas}
   image: ${coredns_image}
   clusterIP: ${cluster_dns_service_ip}
-flannel:
-  image: ${flannel_image}
-  cniImage: ${flannel_cni_image}
+calico:
+  networkMTU: ${network_mtu}
+  image: ${calico_image}
+  cniImage: ${calico_cni_image}
+  enableReporting: ${enable_reporting}
+  networkIpAutodetectionMethod: ${network_ip_autodetection_method}
+  ipipEnabled: ${ipip_enabled}
+  vxlanEnabled: ${vxlan_enabled}
+  ipipReadiness: "${ipip_readiness}"
   podCIDR: ${pod_cidr}
+  networkEncapsulation: "${network_encapsulation}"

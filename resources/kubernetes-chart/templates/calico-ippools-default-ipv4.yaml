@@ -5,6 +5,6 @@ metadata:
 spec:
   blockSize: 24
   cidr: {{ .Values.calico.podCIDR }}
-  {{ .Values.calico.networkEncapsulation }}: Always
+  {{ .Values.calico.networkEncapsulation }}
   natOutgoing: true
   nodeSelector: all()
