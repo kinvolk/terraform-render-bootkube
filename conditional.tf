@@ -6,7 +6,7 @@ resource "template_dir" "flannel-manifests" {
   destination_dir = "${var.asset_dir}/manifests-networking"
 
   vars {
-    flannel_image     = "${var.container_images["flannel"]}"
+    flannel_image     = "${var.container_images["flannel"]}${var.container_arch}"
     flannel_cni_image = "${var.container_images["flannel_cni"]}"
     pod_cidr          = "${var.pod_cidr}"
   }
