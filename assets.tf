@@ -21,7 +21,7 @@ resource "template_dir" "manifests" {
   vars {
     hyperkube_image         = "${var.container_images["hyperkube"]}"
     pod_checkpointer_image  = "${var.container_images["pod_checkpointer"]}"
-    coredns_image           = "${var.container_images["coredns"]}"
+    coredns_image           = "${var.container_images["coredns"]}${var.container_arch}"
     etcd_servers            = "${join(",", formatlist("https://%s:2379", var.etcd_servers))}"
     control_plane_replicas  = "${max(2, length(var.etcd_servers))}"
     cloud_provider          = "${var.cloud_provider}"
