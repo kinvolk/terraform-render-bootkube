@@ -13,10 +13,23 @@ resource "template_dir" "bootstrap-manifests" {
   }
 }
 
-# Self-hosted Kubernetes manifests
-resource "template_dir" "manifests" {
-  source_dir      = "${replace(path.module, path.cwd, ".")}/resources/manifests"
-  destination_dir = "${var.asset_dir}/manifests"
+# Populate kubernetes chart values file named kubernetes.yaml.
+resource "local_file" "kubernetes" {
+  content  = data.template_file.kubernetes.rendered
+  filename = "${var.asset_dir}/charts/kube-system/kubernetes.yaml"
+}
+
+# Populate kubernetes control plane chart.
+# TODO: Currently, there is no way in Terraform to copy local directory, so we use `template_dir` for it.
+# The downside is, that any Terraform templating syntax stored in this directory will be evaluated, which may bring unexpected results.
+resource "template_dir" "kubernetes" {
+  source_dir      = "${replace(path.module, path.cwd, ".")}/resources/charts/kubernetes"
+  destination_dir = "${var.asset_dir}/charts/kube-system/kubernetes"
+}
+
+# Render kubernetes.yaml for kubernetes chart.
+data "template_file" "kubernetes" {
+  template = "${file("${path.module}/resources/charts/kubernetes.yaml")}"
 
   vars = {
     hyperkube_image         = var.container_images["hyperkube"]
