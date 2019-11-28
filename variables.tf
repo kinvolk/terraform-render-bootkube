@@ -103,7 +103,7 @@ variable "container_images" {
 
     # only amd64 images available for cloudnativelabs/kube-router
     kube_router      = "cloudnativelabs/kube-router:v0.3.2"
-    hyperkube        = "k8s.gcr.io/hyperkube:v1.16.2"
+    hyperkube        = "k8s.gcr.io/hyperkube:v1.16.3"
     coredns          = "coredns/coredns:coredns-"
     pod_checkpointer = "kinvolk/pod-checkpointer:83e25e5968391b9eb342042c435d1b3eeddb2be1"
   }
