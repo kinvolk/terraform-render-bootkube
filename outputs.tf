@@ -1,11 +1,3 @@
-output "id" {
-  value = sha1("${template_dir.bootstrap-manifests.id} ${template_dir.manifests.id}")
-}
-
-output "content_hash" {
-  value = sha1("${template_dir.bootstrap-manifests.id} ${template_dir.manifests.id}")
-}
-
 output "cluster_dns_service_ip" {
   value = cidrhost(var.service_cidr, 10)
 }
@@ -71,5 +63,5 @@ output "server" {
 }
 
 output "server_admin" {
-  value = format("https://%s:%s", local.api_servers_external[0], var.external_apiserver_port)
+  value = format("https://%s:%s", element(local.api_servers_external, 0), var.external_apiserver_port)
 }
