@@ -60,6 +60,31 @@ data "template_file" "kubernetes" {
   }
 }
 
+# Render kubelet.yaml for kubelet chart
+data "template_file" "kubelet" {
+  template = "${file("${path.module}/resources/charts/kubelet.yaml")}"
+
+  vars = {
+    hyperkube_image         = var.container_images["hyperkube"]
+    cluster_dns_service_ip  = cidrhost(var.service_cidr, 10)
+    cluster_domain_suffix   = var.cluster_domain_suffix
+  }
+}
+
+# Populate kubelet chart values file named kubelet.yaml.
+resource "local_file" "kubelet" {
+  content = data.template_file.kubelet.rendered
+  filename = "${var.asset_dir}/charts/kube-system/kubelet.yaml"
+}
+
+# Populate kubelet chart.
+# TODO: Currently, there is no way in Terraform to copy local directory, so we use `template_dir` for it.
+# The downside is, that any Terraform templating syntax stored in this directory will be evaluated, which may bring unexpected results.
+resource "template_dir" "kubelet" {
+  source_dir = "${replace(path.module, path.cwd, ".")}/resources/charts/kubelet"
+  destination_dir = "${var.asset_dir}/charts/kube-system/kubelet"
+}
+
 # Generated kubeconfig for Kubelets
 resource "local_file" "kubeconfig-kubelet" {
   content  = data.template_file.kubeconfig-kubelet.rendered
