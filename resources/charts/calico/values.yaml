@@ -1,7 +1,7 @@
 calico:
   networkMTU: 1500
-  image: calico/node:v3.10.1
-  cniImage: calico/cni:v3.10.1
+  image: calico/node:v3.11.2
+  cniImage: calico/cni:v3.11.2
   enableReporting: false
   networkIpAutodetectionMethod: first-found
   ipipEnabled: true
