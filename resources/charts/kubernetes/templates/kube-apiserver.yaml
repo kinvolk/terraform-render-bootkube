@@ -54,13 +54,21 @@ spec:
         - --insecure-port=0
         - --kubelet-client-certificate=/etc/kubernetes/secrets/apiserver.crt
         - --kubelet-client-key=/etc/kubernetes/secrets/apiserver.key
-        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname{{ .Values.apiserver.aggregationFlags }}
+        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
         - --secure-port=6443
         - --service-account-key-file=/etc/kubernetes/secrets/service-account.pub
         - --service-cluster-ip-range={{ .Values.apiserver.serviceCIDR }}
         - --storage-backend=etcd3
         - --tls-cert-file=/etc/kubernetes/secrets/apiserver.crt
         - --tls-private-key-file=/etc/kubernetes/secrets/apiserver.key
+        {{- if .Values.apiserver.enableAggregation }}
+        - --proxy-client-cert-file=/etc/kubernetes/secrets/aggregation-client.crt
+        - --proxy-client-key-file=/etc/kubernetes/secrets/aggregation-client.key
+        - --requestheader-client-ca-file=/etc/kubernetes/secrets/aggregation-ca.crt
+        - --requestheader-extra-headers-prefix=X-Remote-Extra-
+        - --requestheader-group-headers=X-Remote-Group
+        - --requestheader-username-headers=X-Remote-User
+        {{- end }}
         env:
         - name: POD_IP
           valueFrom:

@@ -53,23 +53,11 @@ data "template_file" "kubernetes" {
     etcd_ca_cert            = base64encode(tls_self_signed_cert.etcd-ca.cert_pem)
     etcd_client_cert        = base64encode(tls_locally_signed_cert.client.cert_pem)
     etcd_client_key         = base64encode(tls_private_key.client.private_key_pem)
-    aggregation_flags       = var.enable_aggregation == true ? indent(8, local.aggregation_flags) : ""
+    enable_aggregation      = var.enable_aggregation
     aggregation_ca_cert     = var.enable_aggregation == true ? base64encode(join(" ", tls_self_signed_cert.aggregation-ca.*.cert_pem)) : ""
     aggregation_client_cert = var.enable_aggregation == true ? base64encode(join(" ", tls_locally_signed_cert.aggregation-client.*.cert_pem)) : ""
     aggregation_client_key  = var.enable_aggregation == true ? base64encode(join(" ", tls_private_key.aggregation-client.*.private_key_pem)) : ""
   }
-}
-
-locals {
-  aggregation_flags = <<EOF
-
-- --proxy-client-cert-file=/etc/kubernetes/secrets/aggregation-client.crt
-- --proxy-client-key-file=/etc/kubernetes/secrets/aggregation-client.key
-- --requestheader-client-ca-file=/etc/kubernetes/secrets/aggregation-ca.crt
-- --requestheader-extra-headers-prefix=X-Remote-Extra-
-- --requestheader-group-headers=X-Remote-Group
-- --requestheader-username-headers=X-Remote-User
-EOF
 }
 
 # Generated kubeconfig for Kubelets
