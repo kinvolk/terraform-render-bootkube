@@ -12,7 +12,7 @@ apiserver:
   image: ${hyperkube_image}
   cloudProvider: ${cloud_provider}
   etcdServers: ${etcd_servers}
-  aggregationFlags: ${aggregation_flags}
+  enableAggregation: ${enable_aggregation}
   serviceCIDR: ${service_cidr}
   trustedCertsDir: ${trusted_certs_dir}
 controllerManager:
